@@ -1,6 +1,10 @@
 services:
   perplexica:
+    # build:
+    #   context: .
     image: itzcrazykns1337/perplexica:latest
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     ports:
       - '3000:3000'
     volumes:
