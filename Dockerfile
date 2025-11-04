@@ -14,6 +14,7 @@ COPY drizzle ./drizzle
 
 RUN mkdir -p /home/perplexica/data
 RUN yarn build
+COPY data ./data
 
 FROM node:24.5.0-slim
 
@@ -31,6 +32,7 @@ COPY --from=builder /home/perplexica/.next/static ./public/_next/static
 COPY --from=builder /home/perplexica/.next/standalone ./
 COPY --from=builder /home/perplexica/data ./data
 COPY drizzle ./drizzle
+
 
 RUN mkdir /home/perplexica/uploads
 
