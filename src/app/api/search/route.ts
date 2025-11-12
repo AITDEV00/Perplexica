@@ -128,7 +128,7 @@ export const POST = async (req: Request) => {
 
           try {
             controller.close();
-          } catch (error) {}
+          } catch (error) { }
         });
 
         emitter.on('data', (data: string) => {

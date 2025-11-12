@@ -28,6 +28,8 @@ export const searchSearxng = async (
   const url = new URL(`${searxngURL}/search?format=json`);
   url.searchParams.append('q', query);
 
+  console.log("Query for searxng", { query });
+
   if (opts) {
     Object.keys(opts).forEach((key) => {
       const value = opts[key as keyof SearxngSearchOptions];
