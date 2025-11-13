@@ -73,6 +73,9 @@ type Config = {
   search: {
     [key: string]: any;
   };
+  masking: {
+    maskingURL: string
+  }
 };
 
 type EnvMap = {
@@ -93,6 +96,7 @@ type UIConfigSections = {
   personalization: UIConfigField[];
   modelProviders: ModelProviderUISection[];
   search: UIConfigField[];
+  masking: UIConfigField[];
 };
 
 export type {

@@ -19,6 +19,9 @@ class ConfigManager {
     search: {
       searxngURL: '',
     },
+    masking: {
+      maskingURL: ''
+    }
   };
   uiConfigSections: UIConfigSections = {
     preferences: [
@@ -94,6 +97,19 @@ class ConfigManager {
         default: '',
         scope: 'server',
         env: 'SEARXNG_API_URL',
+      },
+    ],
+    masking: [
+      {
+        name: 'Masking URL',
+        key: 'maskingURL',
+        type: 'string',
+        required: true,
+        description: 'The URL of your masking query service API',
+        placeholder: 'http://localhost:8077',
+        default: '',
+        scope: 'server',
+        env: 'MASKING_API_URL',
       },
     ],
   };

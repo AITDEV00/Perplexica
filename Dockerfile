@@ -72,5 +72,6 @@ RUN echo "searxng ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 EXPOSE 3000 8080
 
 ENV SEARXNG_API_URL=http://localhost:8080
+ENV MASKING_API_URL=http://service-query-mask:8000
 
 CMD ["/home/perplexica/entrypoint.sh"]

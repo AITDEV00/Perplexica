@@ -1,22 +1,24 @@
+import Select from '@/components/ui/Select';
+import { cn } from '@/lib/utils';
 import { Dialog, DialogPanel } from '@headlessui/react';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   BrainCog,
   ChevronLeft,
   Search,
+  Shield,
   Sliders,
-  ToggleRight,
+  ToggleRight
 } from 'lucide-react';
-import Preferences from './Sections/Preferences';
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import Loader from '../ui/Loader';
-import { cn } from '@/lib/utils';
+import MaskingSection from './Sections/Masking';
 import Models from './Sections/Models/Section';
-import SearchSection from './Sections/Search';
-import Select from '@/components/ui/Select';
 import Personalization from './Sections/Personalization';
+import Preferences from './Sections/Preferences';
+import SearchSection from './Sections/Search';
 
 const sections = [
   {
@@ -50,6 +52,14 @@ const sections = [
     icon: Search,
     component: SearchSection,
     dataAdd: 'search',
+  },
+  {
+    key: 'masking',
+    name: 'Masking',
+    description: 'Manage masking settings.',
+    icon: Shield,
+    component: MaskingSection,
+    dataAdd: 'masking',
   },
 ];
 

@@ -74,7 +74,7 @@ This will pull and start the Perplexica container with the bundled SearxNG searc
 If you already have SearxNG running, you can use the slim version of Perplexica:
 
 ```bash
-docker run -d -p 3000:3000 -e SEARXNG_API_URL=http://your-searxng-url:8080 -v perplexica-data:/home/perplexica/data -v perplexica-uploads:/home/perplexica/uploads --name perplexica itzcrazykns1337/perplexica:slim-latest
+docker run -d -p 3000:3000 -e SEARXNG_API_URL=http://your-searxng-url:8080 -e MASKING_API_URL=http://your-masking-url:8077 -v perplexica-data:/home/perplexica/data -v perplexica-uploads:/home/perplexica/uploads --name perplexica itzcrazykns1337/perplexica:slim-latest
 ```
 
 **Important**: Make sure your SearxNG instance has:

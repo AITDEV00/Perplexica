@@ -13,3 +13,6 @@ export const getConfiguredModelProviderById = (
 
 export const getSearxngURL = () =>
   configManager.getConfig('search.searxngURL', '');
+
+export const getMaskingURL = () =>
+  configManager.getConfig('masking.maskingURL', '');
