@@ -1,14 +1,15 @@
-import crypto from 'crypto';
-import { AIMessage, BaseMessage, HumanMessage } from '@langchain/core/messages';
-import { EventEmitter } from 'stream';
 import db from '@/lib/db';
 import { chats, messages as messagesSchema } from '@/lib/db/schema';
-import { and, eq, gt } from 'drizzle-orm';
-import { getFileDetails } from '@/lib/utils/files';
-import { searchHandlers } from '@/lib/search';
-import { z } from 'zod';
+import { logger } from '@/lib/logger';
 import ModelRegistry from '@/lib/models/registry';
 import { ModelWithProvider } from '@/lib/models/types';
+import { searchHandlers } from '@/lib/search';
+import { getFileDetails } from '@/lib/utils/files';
+import { AIMessage, BaseMessage, HumanMessage } from '@langchain/core/messages';
+import crypto from 'crypto';
+import { and, eq, gt } from 'drizzle-orm';
+import { EventEmitter } from 'stream';
+import { z } from 'zod';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -290,6 +291,7 @@ export const POST = async (req: Request) => {
         { status: 400 },
       );
     }
+    logger('request', { user_message: message.content, history: body.history });
 
     const stream = await handler.searchAndAnswer(
       message.content,

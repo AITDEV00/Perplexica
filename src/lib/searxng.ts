@@ -1,4 +1,5 @@
 import { getSearxngURL } from './config/serverRegistry';
+import { logger } from './logger';
 import { getMaskedQuery, MaskQueryResponse } from './mask';
 
 interface SearxngSearchOptions {
@@ -36,6 +37,7 @@ export const searchSearxng = async (
   console.log('🟠 Original Query:', query);
   console.log('🟢 Masked Query  :', finalQuery);
   console.log('==============================\n');
+  logger('response', { unMaskedQuery: query, maskedQuery: finalQuery });
 
   // Construct URL
   const url = new URL(`${searxngURL}/search?format=json`);
