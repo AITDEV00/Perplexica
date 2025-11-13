@@ -11,9 +11,16 @@ services:
     #   - data:/home/perplexica/data
     #   - uploads:/home/perplexica/uploads
     restart: unless-stopped
+    networks:
+      - common_net
 
 volumes:
   data:
     name: 'perplexica-data'
   uploads:
     name: 'perplexica-uploads'
+
+networks:
+  common_net:
+    external: true
+    name: common_network
