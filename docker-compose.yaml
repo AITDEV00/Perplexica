@@ -7,9 +7,10 @@ services:
       - NODE_TLS_REJECT_UNAUTHORIZED=0
     ports:
       - '3000:3000'
-    # volumes:
-    #   - data:/home/perplexica/data
-    #   - uploads:/home/perplexica/uploads
+    volumes:
+      - ./logs:/home/perplexica/app/logs
+    #   - ./data:/home/perplexica/data
+      # - uploads:/home/perplexica/uploads
     restart: unless-stopped
     networks:
       - common_net
