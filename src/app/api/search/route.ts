@@ -1,6 +1,7 @@
 import { AIMessage, BaseMessage, HumanMessage } from '@langchain/core/messages';
 import { MetaSearchAgentType } from '@/lib/search/metaSearchAgent';
 import { searchHandlers } from '@/lib/search';
+import { logger } from '@/lib/logger';
 import ModelRegistry from '@/lib/models/registry';
 import { ModelWithProvider } from '@/lib/models/types';
 
@@ -51,7 +52,7 @@ export const POST = async (req: Request) => {
     if (!searchHandler) {
       return Response.json({ message: 'Invalid focus mode' }, { status: 400 });
     }
-
+    logger('request', { user_message: body.query, history: body.history });
     const emitter = await searchHandler.searchAndAnswer(
       body.query,
       history,
