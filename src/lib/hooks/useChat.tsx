@@ -122,7 +122,7 @@ const checkConfig = async (
 
     if (!chatModelProvider) {
       throw new Error(
-        'No chat models found, pleae configure them in the settings page.',
+        'No chat models found, please configure them in the settings page.',
       );
     }
 
@@ -139,7 +139,7 @@ const checkConfig = async (
 
     if (!embeddingModelProvider) {
       throw new Error(
-        'No embedding models found, pleae configure them in the settings page.',
+        'No embedding models found, please configure them in the settings page.',
       );
     }
 
@@ -533,7 +533,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       window.history.replaceState(null, '', `/c/${chatId}`);
     }
 
-    let recievedMessage = '';
+    let receivedMessage = '';
     let added = false;
 
     messageId = messageId ?? crypto.randomBytes(7).toString('hex');
@@ -600,14 +600,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             }),
           );
         }
-        recievedMessage += data.data;
+        receivedMessage += data.data;
       }
 
       if (data.type === 'messageEnd') {
         setChatHistory((prevHistory) => [
           ...prevHistory,
           ['human', message],
-          ['assistant', recievedMessage],
+          ['assistant', data.receivedMessage],
         ]);
 
         setLoading(false);

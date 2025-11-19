@@ -104,15 +104,15 @@ const handleEmitterEvents = async (
   stream.on('data', (data) => {
     const parsedData = JSON.parse(data);
     if (parsedData.type === 'response') {
-      writer.write(
-        encoder.encode(
-          JSON.stringify({
-            type: 'message',
-            data: parsedData.data,
-            messageId: aiMessageId,
-          }) + '\n',
-        ),
-      );
+      // writer.write(
+      //   encoder.encode(
+      //     JSON.stringify({
+      //       type: 'message',
+      //       data: parsedData.data,
+      //       messageId: aiMessageId,
+      //     }) + '\n',
+      //   ),
+      // );
 
       receivedMessage += parsedData.data;
     } else if (parsedData.type === 'sources') {
@@ -141,9 +141,18 @@ const handleEmitterEvents = async (
   });
   stream.on('end', () => {
     writer.write(
+        encoder.encode(
+          JSON.stringify({
+            type: 'message',
+            data: receivedMessage,
+            messageId: aiMessageId,
+          }) + '\n',
+        ),
+      );
+    writer.write(
       encoder.encode(
         JSON.stringify({
-          type: 'messageEnd',
+          type: 'messageEnd'
         }) + '\n',
       ),
     );

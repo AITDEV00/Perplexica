@@ -34,6 +34,7 @@ export interface MetaSearchAgentType {
     optimizationMode: 'speed' | 'balanced' | 'quality',
     fileIds: string[],
     systemInstructions: string,
+    isMasking?: boolean
   ) => Promise<eventEmitter>;
 }
 
@@ -60,7 +61,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     this.config = config;
   }
 
-  private async createSearchRetrieverChain(llm: BaseChatModel) {
+  private async createSearchRetrieverChain(llm: BaseChatModel, isMasking?: boolean) {
     (llm as unknown as ChatOpenAI).temperature = 0;
 
     return RunnableSequence.from([
@@ -221,6 +222,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
           const res = await searchSearxng(question, {
             language: 'en',
             engines: this.config.activeEngines,
+            isMasking
           });
 
           const documents = res.results.map(
@@ -251,6 +253,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     embeddings: Embeddings,
     optimizationMode: 'speed' | 'balanced' | 'quality',
     systemInstructions: string,
+    isMasking?: boolean
   ) {
     return RunnableSequence.from([
       RunnableMap.from({
@@ -268,7 +271,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
 
           if (this.config.searchWeb) {
             const searchRetrieverChain =
-              await this.createSearchRetrieverChain(llm);
+              await this.createSearchRetrieverChain(llm, isMasking);
 
             const searchRetrieverResult = await searchRetrieverChain.invoke({
               chat_history: processedHistory,
@@ -484,6 +487,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     optimizationMode: 'speed' | 'balanced' | 'quality',
     fileIds: string[],
     systemInstructions: string,
+    isMasking?: boolean
   ) {
     const emitter = new eventEmitter();
 
@@ -493,6 +497,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
       embeddings,
       optimizationMode,
       systemInstructions,
+      isMasking
     );
 
     const stream = answeringChain.streamEvents(

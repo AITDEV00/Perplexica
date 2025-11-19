@@ -13,6 +13,7 @@ interface ChatRequestBody {
   history: Array<[string, string]>;
   stream?: boolean;
   systemInstructions?: string;
+  isMasking?: boolean;
 }
 
 export const POST = async (req: Request) => {
@@ -60,6 +61,7 @@ export const POST = async (req: Request) => {
       body.optimizationMode,
       [],
       body.systemInstructions || '',
+      body.isMasking
     );
 
     if (!body.stream) {
@@ -113,6 +115,7 @@ export const POST = async (req: Request) => {
     const stream = new ReadableStream({
       start(controller) {
         let sources: any[] = [];
+        let final_message: string = "";
 
         controller.enqueue(
           encoder.encode(
@@ -138,14 +141,15 @@ export const POST = async (req: Request) => {
             const parsedData = JSON.parse(data);
 
             if (parsedData.type === 'response') {
-              controller.enqueue(
-                encoder.encode(
-                  JSON.stringify({
-                    type: 'response',
-                    data: parsedData.data,
-                  }) + '\n',
-                ),
-              );
+              final_message += parsedData.data;
+              // controller.enqueue(
+              //   encoder.encode(
+              //     JSON.stringify({
+              //       type: 'response',
+              //       data: parsedData.data,
+              //     }) + '\n',
+              //   ),
+              // );
             } else if (parsedData.type === 'sources') {
               sources = parsedData.data;
               controller.enqueue(
@@ -168,7 +172,15 @@ export const POST = async (req: Request) => {
           controller.enqueue(
             encoder.encode(
               JSON.stringify({
-                type: 'done',
+                type: 'response',
+                data: final_message,
+              }) + '\n',
+            ),
+          );
+          controller.enqueue(
+            encoder.encode(
+              JSON.stringify({
+                type: 'done'
               }) + '\n',
             ),
           );

@@ -7,6 +7,7 @@ interface SearxngSearchOptions {
   engines?: string[];
   language?: string;
   pageno?: number;
+  isMasking?: boolean
 }
 
 interface SearxngSearchResult {
@@ -26,22 +27,25 @@ export const searchSearxng = async (
 ) => {
   const searxngURL = getSearxngURL();
 
-  // Fetch masked query
-  const maskedResponse: MaskQueryResponse = await getMaskedQuery(query);
-  const finalQuery = maskedResponse?.masked_query || query;
+  if (opts?.isMasking) {
+    // Fetch masked query
+    const maskedResponse: MaskQueryResponse = await getMaskedQuery(query);
 
-  // Log visibility for masked/unmasked comparison
-  console.log('\n==============================');
-  console.log('🔍  Searxng Query Details');
-  console.log('------------------------------');
-  console.log('🟠 Original Query:', query);
-  console.log('🟢 Masked Query  :', finalQuery);
-  console.log('==============================\n');
-  logger('response', { unMaskedQuery: query, maskedQuery: finalQuery });
+    // Log visibility for masked/unmasked comparison
+    console.log('\n==============================');
+    console.log('🔍  Searxng Query Details');
+    console.log('------------------------------');
+    console.log('🟠 Original Query:', query);
+    console.log('🟢 Masked Query  :', maskedResponse?.masked_query);
+    console.log('==============================\n');
+    logger('response', { unMaskedQuery: query, maskedQuery: maskedResponse?.masked_query });
+
+    query = maskedResponse?.masked_query;
+  }
 
   // Construct URL
   const url = new URL(`${searxngURL}/search?format=json`);
-  url.searchParams.append('q', finalQuery);
+  url.searchParams.append('q', query);
 
   // Add optional parameters
   if (opts) {
