@@ -8,7 +8,7 @@ interface SearxngSearchOptions {
   language?: string;
   pageno?: number;
   isMasking?: boolean;
-  time_range?: 'day'| 'month' | 'year';
+  time_range?: 'day' | 'week' | 'month' | 'year';
 }
 
 interface SearxngSearchResult {

@@ -35,7 +35,7 @@ export interface MetaSearchAgentType {
     fileIds: string[],
     systemInstructions: string,
     isMasking?: boolean,
-    time_range?: 'day'| 'month' | 'year'
+    time_range?: 'day' | 'week' | 'month' | 'year'
   ) => Promise<eventEmitter>;
 }
 
@@ -62,7 +62,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     this.config = config;
   }
 
-  private async createSearchRetrieverChain(llm: BaseChatModel, isMasking?: boolean, time_range?: 'day'| 'month' | 'year') {
+  private async createSearchRetrieverChain(llm: BaseChatModel, isMasking?: boolean, time_range?: 'day' | 'week' | 'month' | 'year') {
     (llm as unknown as ChatOpenAI).temperature = 0;
 
     return RunnableSequence.from([
@@ -256,7 +256,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     optimizationMode: 'speed' | 'balanced' | 'quality',
     systemInstructions: string,
     isMasking?: boolean,
-    time_range?: 'day'| 'month' | 'year'
+    time_range?: 'day' | 'week' | 'month' | 'year'
   ) {
     return RunnableSequence.from([
       RunnableMap.from({
@@ -491,7 +491,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     fileIds: string[],
     systemInstructions: string,
     isMasking?: boolean,
-    time_range?: 'day'| 'month' | 'year'
+    time_range?: 'day' | 'week' | 'month' | 'year'
   ) {
     const emitter = new eventEmitter();
 

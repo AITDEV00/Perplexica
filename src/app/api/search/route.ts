@@ -15,7 +15,7 @@ interface ChatRequestBody {
   stream?: boolean;
   systemInstructions?: string;
   isMasking?: boolean;
-  time_range?: 'day'| 'month' | 'year';
+  time_range?: 'day' | 'week' | 'month' | 'year';
 }
 
 export const POST = async (req: Request) => {
