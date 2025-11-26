@@ -34,7 +34,8 @@ export interface MetaSearchAgentType {
     optimizationMode: 'speed' | 'balanced' | 'quality',
     fileIds: string[],
     systemInstructions: string,
-    isMasking?: boolean
+    isMasking?: boolean,
+    time_range?: 'day'| 'month' | 'year'
   ) => Promise<eventEmitter>;
 }
 
@@ -61,7 +62,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
     this.config = config;
   }
 
-  private async createSearchRetrieverChain(llm: BaseChatModel, isMasking?: boolean) {
+  private async createSearchRetrieverChain(llm: BaseChatModel, isMasking?: boolean, time_range?: 'day'| 'month' | 'year') {
     (llm as unknown as ChatOpenAI).temperature = 0;
 
     return RunnableSequence.from([
@@ -222,7 +223,8 @@ class MetaSearchAgent implements MetaSearchAgentType {
           const res = await searchSearxng(question, {
             language: 'en',
             engines: this.config.activeEngines,
-            isMasking
+            isMasking,
+            time_range
           });
 
           const documents = res.results.map(
@@ -253,7 +255,8 @@ class MetaSearchAgent implements MetaSearchAgentType {
     embeddings: Embeddings,
     optimizationMode: 'speed' | 'balanced' | 'quality',
     systemInstructions: string,
-    isMasking?: boolean
+    isMasking?: boolean,
+    time_range?: 'day'| 'month' | 'year'
   ) {
     return RunnableSequence.from([
       RunnableMap.from({
@@ -271,7 +274,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
 
           if (this.config.searchWeb) {
             const searchRetrieverChain =
-              await this.createSearchRetrieverChain(llm, isMasking);
+              await this.createSearchRetrieverChain(llm, isMasking, time_range);
 
             const searchRetrieverResult = await searchRetrieverChain.invoke({
               chat_history: processedHistory,
@@ -487,7 +490,8 @@ class MetaSearchAgent implements MetaSearchAgentType {
     optimizationMode: 'speed' | 'balanced' | 'quality',
     fileIds: string[],
     systemInstructions: string,
-    isMasking?: boolean
+    isMasking?: boolean,
+    time_range?: 'day'| 'month' | 'year'
   ) {
     const emitter = new eventEmitter();
 
@@ -497,7 +501,8 @@ class MetaSearchAgent implements MetaSearchAgentType {
       embeddings,
       optimizationMode,
       systemInstructions,
-      isMasking
+      isMasking,
+      time_range
     );
 
     const stream = answeringChain.streamEvents(

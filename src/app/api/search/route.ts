@@ -15,6 +15,7 @@ interface ChatRequestBody {
   stream?: boolean;
   systemInstructions?: string;
   isMasking?: boolean;
+  time_range?: 'day'| 'month' | 'year';
 }
 
 export const POST = async (req: Request) => {
@@ -62,7 +63,8 @@ export const POST = async (req: Request) => {
       body.optimizationMode,
       [],
       body.systemInstructions || '',
-      body.isMasking
+      body.isMasking,
+      body.time_range,
     );
 
     if (!body.stream) {

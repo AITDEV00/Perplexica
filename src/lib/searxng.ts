@@ -7,7 +7,8 @@ interface SearxngSearchOptions {
   engines?: string[];
   language?: string;
   pageno?: number;
-  isMasking?: boolean
+  isMasking?: boolean;
+  time_range?: 'day'| 'month' | 'year';
 }
 
 interface SearxngSearchResult {
@@ -46,6 +47,7 @@ export const searchSearxng = async (
   // Construct URL
   const url = new URL(`${searxngURL}/search?format=json`);
   url.searchParams.append('q', query);
+  if(opts?.time_range) url.searchParams.append('time_range', opts.time_range);
 
   // Add optional parameters
   if (opts) {
