@@ -14,7 +14,7 @@ COPY drizzle ./drizzle
 
 RUN mkdir -p /home/perplexica/data
 RUN yarn build
-COPY data ./data
+# COPY data ./data
 
 FROM node:24.5.0-slim
 

@@ -8,8 +8,8 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./logs:/home/perplexica/app/logs
-    #   - ./data:/home/perplexica/data
+    #   - ./logs:/home/perplexica/app/logs
+      - ./data:/home/perplexica/data
       # - uploads:/home/perplexica/uploads
     restart: unless-stopped
     networks:
